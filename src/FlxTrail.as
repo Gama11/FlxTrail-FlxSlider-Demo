@@ -100,7 +100,10 @@ package
 				
 				// Push the current position into the positons array and drop one.
 				var spritePosition:FlxPoint = new FlxPoint(sprite.x, sprite.y);
+				spritePosition.x -= ((members[0].frameWidth - sprite.width) / 2);
+				spritePosition.y -= ((members[0].frameHeight - sprite.height) / 2);
 				recentPositions.unshift(spritePosition);
+				
 				if (recentPositions.length > trailLength) recentPositions.pop();
 	
 				// Also do the same thing for the Sprites angle if rotationsEnabled 
