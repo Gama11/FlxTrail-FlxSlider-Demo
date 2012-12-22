@@ -142,8 +142,7 @@ package
 			trailLength += amount;
 
 			// Create the trail sprites
-			for (var i:int = 0; i < amount; i++) 
-			{
+			for (var i:int = 0; i < amount; i++) {
 				var trailSprite:FlxSprite = new FlxSprite(0, 0, image);
 				add(trailSprite);
 				trailSprite.alpha = transp;
@@ -151,6 +150,18 @@ package
 				
 				if (trailSprite.alpha <= 0) trailSprite.kill();
 			}	
+		}
+		
+		/**
+		 * Simple helper function that resets the trail.
+		 */
+		public function resetTrail():void
+		{
+			recentPositions = [];
+			recentAngles = [];
+			for each (var i:* in members) {
+				(i as FlxSprite).visible = false;
+			}
 		}
 		
 		/**
@@ -162,8 +173,7 @@ package
 		{
 			image = Image;
 			
-			for (var i:int = 0; i < trailLength; i++) 
-			{
+			for (var i:int = 0; i < trailLength; i++) {
 				members[i].loadGraphic(Image);
 			}	
 		}

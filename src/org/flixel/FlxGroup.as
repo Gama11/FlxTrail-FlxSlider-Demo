@@ -571,14 +571,5 @@ package org.flixel
 				return -_sortOrder;
 			return 0;
 		}
-		
-		public function killMembers():void
-		{
-			for (var d:int = 0; d < length; d++) 
-			{
-				var member:FlxObject = members[d];
-				if (member != null) member.kill();
-			}
-		}
 	}
 }

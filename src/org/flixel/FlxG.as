@@ -232,8 +232,6 @@ package org.flixel
 		 * Internal storage system to prevent graphics from being used repeatedly in memory.
 		 */
 		static protected var _cache:Object;
-		
-		static public var globalLevel:String = "";
 
 		static public function getLibraryName():String
 		{
@@ -248,7 +246,7 @@ package org.flixel
 		static public function log(Data:Object):void
 		{
 			if((_game != null) && (_game._debugger != null))
-				_game._debugger.log.add((Data == null)?"ERROR: null object":Data.toString());
+				_game._debugger.log.add((Data == null)?"ERROR: null object":((Data is Array)?FlxU.formatArray(Data as Array):Data.toString()));
 		}
 		
 		/**
@@ -583,7 +581,6 @@ package org.flixel
 		 */
 		static public function set volume(Volume:Number):void
 		{
-			return;
 			_volume = Volume;
 			if(_volume < 0)
 				_volume = 0;

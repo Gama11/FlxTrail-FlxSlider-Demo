@@ -165,6 +165,7 @@ package
 			width = Width;
 			callback = Callback;
 			if (Callback != null) overwriting = false;
+			if (Obj[VarString] != Math.round(Obj[VarString])) decimals = 2;
 			
 			// Create the slider	
 			createSlider();

@@ -7,7 +7,6 @@ package org.flixel
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import org.flixel.plugin.photonstorm.FlxDelay;
 	
 	import org.flixel.system.FlxAnim;
 	
@@ -78,11 +77,6 @@ package org.flixel
 		 * NOTE: Rarely if ever necessary, most sprite operations will flip this flag automatically.
 		 */
 		public var dirty:Boolean;
-		/**
-		 * Really handy for having different "types" of a sprite.
-		 */
-		public var type:int;
-		
 		
 		/**
 		 * Internal, stores all the animations that were added to this sprite.
@@ -161,10 +155,6 @@ package org.flixel
 		 */
 		protected var _matrix:Matrix;
 		
-		private var knockbackDuration:int = 1000 * 0.001;
-		private var knockbackTimer:FlxDelay = new FlxDelay(knockbackDuration);
-		private var bounceOffset:FlxPoint = new FlxPoint(0, 0);
-		
 		/**
 		 * Creates a white 8x8 square <code>FlxSprite</code> at the specified position.
 		 * Optionally can load a simple, one-frame graphic instead.
@@ -176,8 +166,6 @@ package org.flixel
 		public function FlxSprite(X:Number=0,Y:Number=0,SimpleGraphic:Class=null)
 		{
 			super(X,Y);
-			
-			health = 1;
 
 			_flashPoint = new Point();
 			_flashRect = new Rectangle();
@@ -208,8 +196,6 @@ package org.flixel
 			if(SimpleGraphic == null)
 				SimpleGraphic = ImgDefault;
 			loadGraphic(SimpleGraphic);
-			
-			knockbackTimer.callback = endKnockback;
 		}
 		
 		/**
@@ -927,26 +913,6 @@ package org.flixel
 			if(_callback != null)
 				_callback(((_curAnim != null)?(_curAnim.name):null),_curFrame,_curIndex);
 			dirty = false;
-		}
-		
-		public function bounce(X:int = 0, Y:int = -5):void
-		{
-			if (knockbackTimer.isRunning) return;
-			
-			knockbackTimer.reset(knockbackDuration);
-			
-			bounceOffset.x = X;
-			bounceOffset.y = Y;
-			y += bounceOffset.y;
-			x += bounceOffset.x;
-		}
-		
-		private function endKnockback():void
-		{
-			knockbackTimer.abort();
-						
-			x -= bounceOffset.x;
-			y -= bounceOffset.y;
 		}
 	}
 }

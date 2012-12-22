@@ -2,6 +2,7 @@ package
 {
 	import org.flixel.*;
 	import org.flixel.plugin.photonstorm.*;
+	import flash.desktop.*;
 	
 	public class GameState extends FlxState 
 	{
@@ -82,33 +83,40 @@ package
 		
 			// Sliders
 			var sliderX:int = 512;
-			createSlider("X", sliderX, gY, "x", ball.velocity, 0, 800, 0, xCallback);
-			createSlider("Y", sliderX, gY, "y", ball.velocity, 0, 800, 0, yCallback);
-			createSlider("Sprites", sliderX, gY, "Length", this, 0, 40, 0, changeLength);
-			createSlider("Sprite Alpha", sliderX, gY, "Alpha", this, 0, 1, 2, changeAlpha);
-			createSlider("A. Decrement", sliderX, gY, "alphaDec", this, 0, 0.1, 2, changeDecrement);
-			createSlider("Update Delay", sliderX, gY, "Delay", this, 1, 10, 0, changeDelay);
-			createSlider("Rotation", sliderX, gY, "ballRotation", this, 0, 90, 0);
+			createSlider("X", sliderX, gY, "x", ball.velocity, 0, 800, xCallback);
+			createSlider("Y", sliderX, gY, "y", ball.velocity, 0, 800, yCallback);
+			createSlider("Sprites", sliderX, gY, "Length", this, 0, 40, changeLength);
+			createSlider("Sprite Alpha", sliderX, gY, "Alpha", this, 0, 1, changeAlpha);
+			createSlider("A. Decrement", sliderX, gY, "alphaDec", this, 0, 0.1, changeDecrement);
+			createSlider("Update Delay", sliderX, gY, "Delay", this, 1, 10, changeDelay);
+			createSlider("Rotation", sliderX, gY, "ballRotation", this, 0, 90);
 			
 			// We need a reference to this one because the labels need to be adjusted
-			var shapeSlider:FlxSlider = createSlider("Shape", sliderX, gY, "shape", this, 0, 3, 0, changeShape);
+			var shapeSlider:FlxSlider = createSlider("Shape", sliderX, gY, "shape", this, 0, 3, changeShape);
 			shapeSlider.currentLabel.text = NAMES[0];
 			shapeSlider.setTexts("", true, "", "");
 			
 			// Reset button
-			var resetButton:FlxButton = new FlxButton (700, 445, "Reset", resetCallback);
+			var buttonY:int = 445;
+			var buttonGap:int = 90;
+			var resetButton:FlxButton = new FlxButton(700, buttonY, "Reset Trail", resetCallback);
+			var resetParamsButton:FlxButton = new FlxButton(resetButton.x - buttonGap, buttonY, "Reset Params", resetParamsCallback);
+			var copyParamsButton:FlxButton = new FlxButton(resetParamsButton.x - buttonGap, buttonY, "Copy Params", copyParamsCallback);
 			add(resetButton);
+			add(resetParamsButton);
+			add(copyParamsButton);
 
 			// Texts
 			var headline:FlxText = new FlxText(525, 15, 500, "FlxSlider.as / FlxTrail.as");
+			headline.color = FlxG.BLACK;
 			headline.shadow = 0xFF999999;
 			headline.size = 16;
 			add(headline);
 			
 			var credits:FlxText = new FlxText(FlxG.width - 275, FlxG.height - 18, 500, "Demo Suite and FlxSlider.as / FlxTrail.as by Gama11");
+			credits.color = FlxG.BLACK;
 			add(credits);
 			
-
 			super.create();
 		}
 		
@@ -121,15 +129,15 @@ package
 			super.update();
 		}
 		
-		private function createSlider(Desc:String, X:int, Y:int, Var:String, Parent:Object, Min:Number, Max:Number, Decimals:int = 0, Callback:Function = null):FlxSlider
+		private function createSlider(Desc:String, X:int, Y:int, Var:String, Parent:Object, Min:Number, Max:Number, Callback:Function = null):FlxSlider
 		{
 			var desc:FlxText = new FlxText(X, Y, 200, Desc + ":")
+			desc.color = FlxG.BLACK;
 			desc.size = 16;
 			add(desc);
 			
 			var slider:FlxSlider = new FlxSlider(X + 150, Y + 5, Min, Max, Callback, Var, Parent, 100);
 			slider.setTexts("");
-			slider.decimals = Decimals;
 			slider.hoverSound = HoverSound;
 			add(slider);
 			
@@ -141,17 +149,13 @@ package
 		// Slider Callback Functions
 		
 		private function xCallback(n:Number, currentLabel:FlxText):void
-		{
-			//if (Math.abs(n) == Math.abs(ball.velocity.x)) return;
-				
+		{	
 			ball.velocity.x = n;
 			currentLabel.text = (Math.abs(ball.velocity.x)).toString();
 		}
 		
 		private function yCallback(n:Number, currentLabel:FlxText):void
 		{
-			//if (Math.abs(n) == Math.abs(ball.velocity.y)) return;
-				
 			ball.velocity.y = n;
 			currentLabel.text = (Math.abs(ball.velocity.y)).toString();
 		}
@@ -186,7 +190,6 @@ package
 		
 		private function changeShape(n:Number, currentLabel:FlxText):void
 		{
-			FlxG.log("flag");
 			shape = n;
 			ballTrail.changeGraphic(IMAGES[shape]);
 			ball.loadGraphic(IMAGES[shape]);
@@ -202,9 +205,23 @@ package
 			add(ballTrail);
 		}
 		
+		// Button callbacks
+		
 		private function resetCallback():void
 		{
+			ballTrail.resetTrail();
+		}
+		
+		private function resetParamsCallback():void
+		{
 			FlxG.switchState(new GameState);
+		}
+		
+		private function copyParamsCallback():void
+		{
+			var s:String = "trail:FlxTrail = new FlxTrail(object, image," + Length + "," + Delay + "," + Alpha + ","  + alphaDec + ");";
+			Clipboard.generalClipboard.clear();
+			Clipboard.generalClipboard.setData(ClipboardFormats.TEXT_FORMAT, s, false);
 		}
 	}
 }

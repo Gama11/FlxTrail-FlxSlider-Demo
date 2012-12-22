@@ -45,7 +45,7 @@ package org.flixel.plugin.photonstorm
 		 */
 		public var duration:int;
 		
-		public var started:int;
+		private var started:int;
 		private var expires:int;
 		private var pauseStarted:int;
 		private var pausedTimerRunning:Boolean;

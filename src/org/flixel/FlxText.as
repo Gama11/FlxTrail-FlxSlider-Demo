@@ -53,7 +53,7 @@ package org.flixel
 			_textField.multiline = true;
 			_textField.wordWrap = true;
 			_textField.text = Text;
-			var format:TextFormat = new TextFormat("system",8,0xff000000);
+			var format:TextFormat = new TextFormat("system",8,0xffffff);
 			_textField.defaultTextFormat = format;
 			_textField.setTextFormat(format);
 			if(Text.length <= 0)
