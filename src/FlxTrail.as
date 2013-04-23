@@ -65,13 +65,13 @@ package
 		 * Creates a new <code>FlxTrail</code> effect for a specific FlxSprite.
 		 * 
 		 * @param	Sprite		The FlxSprite the trail is attached to.
-		 * @param	Image		The image to ues for the trailsprites.
+		 * @param	Image		The image to ues for the trailsprites. Optional, uses the sprite's graphic if null.
 		 * @param	Length		The amount of trailsprites to create. 
 		 * @param	Delay		How often to update the trail.
 		 * @param	Alpha		The alpha value for the very first trailsprite.
 		 * @param	Diff		How much lower the alpha of the next trailsprite is.
 		 */
-		override public function FlxTrail(Sprite:FlxSprite, Image:Class, Length:int = 10, Delay:int = 3, Alpha:Number = 0.4, Diff:Number = 0.05):void
+		override public function FlxTrail(Sprite:FlxSprite, Image:Class = null, Length:int = 10, Delay:int = 3, Alpha:Number = 0.4, Diff:Number = 0.05):void
 		{
 			// Sync the vars 
 			sprite = Sprite;
@@ -143,8 +143,11 @@ package
 
 			// Create the trail sprites
 			for (var i:int = 0; i < amount; i++) {
-				var trailSprite:FlxSprite = new FlxSprite(0, 0, image);
-				add(trailSprite);
+				var trailSprite:FlxSprite = new FlxSprite(0, 0);
+				
+				if (image == null) trailSprite.pixels = sprite.pixels;
+				else trailSprite.loadGraphic(image);
+				
 				trailSprite.alpha = transp;
 				transp -= difference;
 				
