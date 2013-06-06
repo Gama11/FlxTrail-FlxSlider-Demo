@@ -152,6 +152,8 @@ package
 				transp -= difference;
 				
 				if (trailSprite.alpha <= 0) trailSprite.kill();
+				
+				add(trailSprite);
 			}	
 		}
 		
