@@ -23,7 +23,7 @@ package
 		private const CIRCLE:int = 2;
 		private const TRIANGLE:int = 3;
 		
-		public var shape:int = 0;
+		public var shape:Number = 0;
 	
 		[Embed(source = "../img/square.png")] private var square:Class;
 		[Embed(source = "../img/rectangle.png")] private var rectangle:Class;
@@ -92,7 +92,7 @@ package
 			createSlider("Rotation", sliderX, gY, "ballRotation", this, 0, 90);
 			
 			// We need a reference to this one because the labels need to be adjusted
-			var shapeSlider:FlxSlider = createSlider("Shape", sliderX, gY, "shape", this, 0, 3, changeShape);
+			var shapeSlider:FlxSlider = createSlider("Shape", sliderX, gY, "shape", this, 0, 3.3, changeShape);
 			shapeSlider.currentLabel.text = NAMES[0];
 			shapeSlider.setTexts("", true, "", "");
 			
@@ -190,6 +190,10 @@ package
 		
 		private function changeShape(n:Number, currentLabel:FlxText):void
 		{
+			n = Math.floor(n)
+			if (n < 0) n = 0;
+			else if (n > IMAGES.length) n = IMAGES.length - 1;
+			
 			shape = n;
 			ballTrail.changeGraphic(IMAGES[shape]);
 			ball.loadGraphic(IMAGES[shape]);
